@@ -1,0 +1,30 @@
+{
+"itemList":[
+  {
+    "Id": 1,
+    "Name": "巧克力",
+    "Type": "Consumable",
+    "Quality": "Common",
+    "Description": "可以恢复小量hp",
+    "Capacity": 10,
+    "BuyPrice": 10,
+    "SellPrice": 5,
+    "Hp": 10,
+    "Mp": 0,
+    "Sprite": "Sprites/Items/hp"
+  },
+  {
+    "Id": 2,
+    "Name": "罐装汽水",
+    "Type": "Consumable",
+    "Quality": "Common",
+    "Description": "可以恢复小量mp",
+    "Capacity": 10,
+    "BuyPrice": 10,
+    "SellPrice": 5,
+    "Hp": 0,
+    "Mp": 10,
+    "Sprite": "Sprites/Items/hp"
+  }
+]
+}
