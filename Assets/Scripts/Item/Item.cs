@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
-[Serializable]
-public class ItemList {
-    [SerializeField]
-   public List<Item> itemList=new List<Item>();
-}
+
 [Serializable]
 public class Item {
     public int Id { get; set; }
@@ -14,7 +11,7 @@ public class Item {
     public ItemType Type { get; set; }
     public ItemQuality Quality { get; set; }
     public string Description { get; set; }
-    public int Capacity { get; set; }
+    public int Capacity { get; set; }//容量
     public int BuyPrice { get; set; }
     public int SellPrice { get; set; }
     public string Sprite { get; set; }
@@ -75,5 +72,53 @@ public class Item {
             "<size=10><color=green>购买价格：{1} 出售价格:{2}</color></size>\n" +
             "<color=yellow><size=10>{3}</size></color>",Name,BuyPrice,SellPrice,Description,color);
         return color;
+    }
+    public bool Equals(Item item)
+    {
+        return Id==item.Id;
+    }
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("ID:" + Id+"\n");
+        sb.Append("名称:" + Name+"\n");
+        sb.Append("类型:");
+        switch (Type) {
+            case ItemType.Consumable:
+                sb.Append("消耗品\n");
+                break;
+            case ItemType.Equipment:
+                sb.Append("装备品\n");
+                break;
+            case ItemType.Material:
+                sb.Append("材料\n");
+                break;
+            case ItemType.Weapon:
+                sb.Append("武器\n");
+                break;
+        }
+        sb.Append("品质:");
+        switch (Quality)
+        {
+            case ItemQuality.Common:
+                sb.Append("普通\n");
+                break;
+            case ItemQuality.UnCommon:
+                sb.Append("特殊\n");
+                break;
+            case ItemQuality.Rare:
+                sb.Append("稀有\n");
+                break;
+            case ItemQuality.Epic:
+                sb.Append("高级\n");
+                break;
+            case ItemQuality.Legendary:
+                sb.Append("传说\n");
+                break;
+            case ItemQuality.Artifact:
+                sb.Append("远古\n");
+                break;
+        }
+        return sb.ToString();
     }
 }

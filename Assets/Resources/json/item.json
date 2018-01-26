@@ -2,28 +2,28 @@
 "itemList":[
   {
     "Id": 1,
-    "Name": "巧克力",
+    "Name": "红苹果",
     "Type": "Consumable",
     "Quality": "Common",
-    "Description": "可以恢复小量hp",
+    "Description": "看上去就想咬上一口的红苹果，连白雪公主都抵御不了它的诱惑。",
+    "Capacity": 10,
+    "BuyPrice": 10,
+    "SellPrice": 5,
+    "Hp": 5,
+    "Mp": 0,
+    "Sprite": "Sprites/Items/apple"
+  },
+  {
+    "Id": 2,
+    "Name": "红色液体",
+    "Type": "Consumable",
+    "Quality": "Common",
+    "Description": "看上去有毒的液体，成分不明。",
     "Capacity": 10,
     "BuyPrice": 10,
     "SellPrice": 5,
     "Hp": 10,
     "Mp": 0,
-    "Sprite": "Sprites/Items/hp"
-  },
-  {
-    "Id": 2,
-    "Name": "罐装汽水",
-    "Type": "Consumable",
-    "Quality": "Common",
-    "Description": "可以恢复小量mp",
-    "Capacity": 10,
-    "BuyPrice": 10,
-    "SellPrice": 5,
-    "Hp": 0,
-    "Mp": 10,
     "Sprite": "Sprites/Items/hp"
   }
 ]
