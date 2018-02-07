@@ -8,8 +8,9 @@ public class InventoryManager : Singleton<InventoryManager> {
     private List<Item> itemList=new List<Item>();
 	// Use this for initialization
 	void Start () {
+        ResourcesTool.Init();
+        Knackpack.Instance.Init(transform.Find(ResourcesTool.ResourceName.KnackpackPanel).Find(ResourcesTool.ResourceName.SlotPanel).gameObject);
         ParseItemJson();
-
     }
 	
 	// Update is called once per frame
@@ -25,7 +26,6 @@ public class InventoryManager : Singleton<InventoryManager> {
         foreach (JToken jItem in jArray) {
             Item item= jItem.ToObject<Item>();
             itemList.Add(item);
-            Debug.Log(item);
         }
     }
     public Item GetItemById(int id)
@@ -36,5 +36,10 @@ public class InventoryManager : Singleton<InventoryManager> {
             }
         }
         return null;
+    }
+    public int ListCount {
+        get {
+            return itemList.Count;
+        }
     }
 }

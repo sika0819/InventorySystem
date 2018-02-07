@@ -13,17 +13,25 @@ public class Slot {//物品槽类
     }
     
 
-    public bool StoreItem(Item item)
+    public bool StoreItem(Item item,int amount=1)
     {
-        if (item==null)
+        if (this.item==null)
         {
             this.item = item;
+            itemUI = new ItemUI(slotGo);
+            itemUI.InitItem(item);
             return true;
         }
         else if (this.item.Equals(item))
         {//序号一致则可以增加数量
-            this.item.Capacity += item.Capacity;
-            return true;
+            if (!IsFilled())
+            {
+                itemUI.AddAmount(amount);
+                return true;
+            }
+            else {
+                Debug.LogWarning("背包已满"+item.Name);
+            }
         }
         return false;
     }
@@ -31,5 +39,13 @@ public class Slot {//物品槽类
         if (item == null)
             return true;
         return false;
+    }
+    public Item.ItemType GetItemType()
+    {
+        return itemUI.item.Type;
+    }
+    public bool IsFilled()
+    {
+        return itemUI.Amount >= item.Capacity;
     }
 }

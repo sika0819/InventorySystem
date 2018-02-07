@@ -227,11 +227,15 @@
     <Compile Include="Assets\Scripts\Inventory\ItemUI.cs" />
     <Compile Include="Assets\Scripts\Inventory\Knackpack.cs" />
     <Compile Include="Assets\Scripts\Inventory\Slot.cs" />
+    <Compile Include="Assets\Scripts\Inventory\ToolTip.cs" />
     <Compile Include="Assets\Scripts\Item\Consumable.cs" />
     <Compile Include="Assets\Scripts\Item\Equipment.cs" />
     <Compile Include="Assets\Scripts\Item\Item.cs" />
     <Compile Include="Assets\Scripts\Item\Weapon.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\Tool\ResourcesTool.cs" />
     <Compile Include="Assets\Scripts\Tool\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Tool\UIEventListener.cs" />
     <Compile Include="Assets\UnityPackages\JsonNetSample\JsonNetSample.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

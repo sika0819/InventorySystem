@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Knackpack : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+public class Knackpack :Inventory {
+    public static Knackpack Instance {
+        get {
+            return SingletonProvider<Knackpack>.Instance;
+        }
+    }
 }
