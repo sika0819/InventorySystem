@@ -7,6 +7,8 @@ public static class ResourcesTool  {
         public static string itemPrefab = "Item";
         public static string SlotPanel = "SlotPanel";
         public static string KnackpackPanel = "KnackpackPanel";
+        public static string ToolTip="ToolTip";
+        public static string Content = "Content";
     }
     public static void Init() {
         GameObject[] gameObjects = Resources.LoadAll<GameObject>("Prefab");

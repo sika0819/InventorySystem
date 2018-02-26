@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 public class UIEventListener : EventTrigger {
-    public delegate void ActionHandler(GameObject go);
-    ActionHandler OnHover;
+    public delegate void ActionHandler();
+    public ActionHandler OnHover;
+    public ActionHandler OnMouseExit;
     public static UIEventListener GetListener(GameObject go) {
         if (go.GetComponent<UIEventListener>() == null)
         {
@@ -15,7 +16,15 @@ public class UIEventListener : EventTrigger {
     }
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        OnHover.Invoke(eventData.hovered[0]);
+        if(OnHover!=null)
+        OnHover.Invoke();
         base.OnPointerEnter(eventData);
+    }
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (OnMouseExit != null)
+            OnMouseExit.Invoke();
+        base.OnPointerExit(eventData);
+
     }
 }

@@ -10,6 +10,7 @@ public class InventoryManager : Singleton<InventoryManager> {
 	void Start () {
         ResourcesTool.Init();
         Knackpack.Instance.Init(transform.Find(ResourcesTool.ResourceName.KnackpackPanel).Find(ResourcesTool.ResourceName.SlotPanel).gameObject);
+        ToolTip.Instance.Init(transform.Find(ResourcesTool.ResourceName.ToolTip).gameObject);
         ParseItemJson();
     }
 	

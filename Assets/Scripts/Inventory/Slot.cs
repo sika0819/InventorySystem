@@ -18,8 +18,7 @@ public class Slot {//物品槽类
         if (this.item==null)
         {
             this.item = item;
-            itemUI = new ItemUI(slotGo);
-            itemUI.InitItem(item);
+            itemUI = new ItemUI(slotGo,item,amount);
             return true;
         }
         else if (this.item.Equals(item))
