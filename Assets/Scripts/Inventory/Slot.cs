@@ -7,9 +7,12 @@ using UnityEngine.UI;
 public class Slot {//物品槽类
     GameObject slotGo;
     public Item item;//存储物品
-    ItemUI itemUI;
+    public ItemUI itemUI;
     public Slot(GameObject go) {
         slotGo = go;
+        UIEventListener.GetListener(slotGo).OnHover = ShowTip;
+        UIEventListener.GetListener(slotGo).OnMouseExit = HideTip;
+        UIEventListener.GetListener(slotGo).OnMouseDown = OnMouseDown;
     }
     
 
@@ -46,5 +49,17 @@ public class Slot {//物品槽类
     public bool IsFilled()
     {
         return itemUI.Amount >= item.Capacity;
+    }
+    public void ShowTip(GameObject go)
+    {
+        ToolTip.Instance.ShowTip(item.GetToolTipText());
+    }
+    public void HideTip(GameObject go)
+    {
+        ToolTip.Instance.HideTip();
+    }
+    public void OnMouseDown(GameObject go) {
+        ItemUI currentItem = itemUI;
+        InventoryManager.Instance.SetItem(itemUI);
     }
 }

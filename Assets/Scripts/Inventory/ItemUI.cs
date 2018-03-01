@@ -36,6 +36,9 @@ public class ItemUI {//物品显示UI
         }
     }
     #endregion
+    public ItemUI(GameObject go) {
+
+    }
     /// <summary>
     /// 初始化方法
     /// </summary>
@@ -46,8 +49,7 @@ public class ItemUI {//物品显示UI
         uiTarget.transform.localPosition = Vector3.zero;
         uiTarget.transform.localScale = Vector3.one;
         InitItem(item, amount);
-        UIEventListener.GetListener(uiTarget).OnHover = ShowTip;
-        UIEventListener.GetListener(uiTarget).OnMouseExit = HideTip;
+       
     }
     public void InitItem(Item item,int amount=1) {
         this.item = item;
@@ -60,10 +62,5 @@ public class ItemUI {//物品显示UI
     public void AddAmount(int amount = 1) {
         Amount += amount;
     }
-    public void ShowTip() {
-        ToolTip.Instance.ShowTip(item.GetToolTipText());
-    }
-    public void HideTip() {
-        ToolTip.Instance.HideTip();
-    }
+    
 }

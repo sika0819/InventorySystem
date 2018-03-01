@@ -27,7 +27,8 @@ public class Equipment : Item {
         Boots,
         Shoulder,
         Belt,
-        Hand
+        MainHand,
+        OffHand
     }
 
     public override string GetToolTipText()
@@ -64,9 +65,10 @@ public class Equipment : Item {
             case EquipmentType.Belt:
                 equipTypeText = "腰带";
                 break;
-            case EquipmentType.Hand:
-                equipTypeText = "手";
+            case EquipmentType.OffHand:
+                equipTypeText = "副手";
                 break;
+         
         }
 
         string newText = string.Format("{0}\n\n<color=blue>装备类型：{1}\n力量：{2}\n智力：{3}\n敏捷：{4}\n体力：{5}</color>", text, equipTypeText, Strength, Intellect, Agility, Stamina);

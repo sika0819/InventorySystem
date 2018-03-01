@@ -14,6 +14,7 @@ public class ToolTip {
     GameObject ToolTipGo;
     Text MainText;
     Text ContentText;
+    public bool isTipShow = false;
     public void Init(GameObject go)
     {
         ToolTipGo = go;
@@ -34,8 +35,14 @@ public class ToolTip {
     public void ShowTip(string tip) {
         ToolTipGo.SetActive(true);
         TipString = tip;
+        isTipShow = true;
     }
     public void HideTip() {
         ToolTipGo.SetActive(false);
+        isTipShow = false;
+    }
+    public void SetPos(Vector3 pos) {
+        if(ToolTipGo.transform.localPosition != pos)
+        ToolTipGo.transform.localPosition = pos;
     }
 }
