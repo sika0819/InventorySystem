@@ -1,13 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 public class UIEventListener : EventTrigger {
-    public delegate void ActionHandler(GameObject go);
+    public delegate void ActionHandler(PointerEventData go);
     public ActionHandler OnHover;
     public ActionHandler OnMouseExit;
     public ActionHandler OnMouseDown;
+    public ActionHandler OnMouseBeginDrag;
+    public ActionHandler OnMouseDrag;
+    public ActionHandler OnMouseDragEnd;
     public static UIEventListener GetListener(GameObject go) {
         if (go.GetComponent<UIEventListener>() == null)
         {
@@ -21,7 +24,7 @@ public class UIEventListener : EventTrigger {
     
         base.OnPointerEnter(eventData);
         if (OnHover != null)
-            OnHover.Invoke(eventData.pointerEnter);
+            OnHover.Invoke(eventData);
     }
     public override void OnPointerExit(PointerEventData eventData)
     {
@@ -29,12 +32,31 @@ public class UIEventListener : EventTrigger {
       
         base.OnPointerExit(eventData);
         if (OnMouseExit != null)
-            OnMouseExit.Invoke(eventData.pointerEnter);
+            OnMouseExit.Invoke(eventData);
     }
-    public override void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        base.OnPointerClick(eventData);
+        if (OnMouseDown != null)
+            OnMouseDown.Invoke(eventData);
+    }
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        base.OnBeginDrag(eventData);
+        if (OnMouseBeginDrag != null)
+            OnMouseBeginDrag.Invoke(eventData);
+    }
+    public override void OnDrag(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-        if (OnMouseDown != null)
-            OnMouseDown.Invoke(eventData.pointerPress);
+        if (OnMouseDrag != null)
+            OnMouseDrag.Invoke(eventData);
+    }
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+        base.OnPointerUp(eventData);
+        if (OnMouseDragEnd != null) {
+            OnMouseDragEnd.Invoke(eventData);
+        }
     }
 }

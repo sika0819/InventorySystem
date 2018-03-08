@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +10,8 @@ public class InventoryManager : Singleton<InventoryManager> {
     private List<Equipment> equipList = new List<Equipment>();//装备库
     private List<Material> materialList = new List<Material>();
     private List<Consumable> consumList = new List<Consumable>();//消耗库
-    private Canvas canvas;
+    [HideInInspector]
+    public Canvas canvas;
     #region 选择的物体
     private Slot pickedItem;
     public Slot PickedItem {
@@ -36,6 +37,7 @@ public class InventoryManager : Singleton<InventoryManager> {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition,Camera.main,out pos);
             ToolTip.Instance.SetPos(pos);
         }
+
 	}
     void ParseItemJson()
     {
@@ -64,6 +66,13 @@ public class InventoryManager : Singleton<InventoryManager> {
             itemList.Add(item);
         }
     }
+    public Slot GetSlotByGameObject(GameObject go) {
+        foreach (Slot item in Knackpack.Instance.slotList) {
+            if (item.slotGo.Equals(go))
+                return item;
+        }
+        return null;
+    }
     public Item GetItemById(int id)
     {
         for (int i = 0; i < itemList.Count; i++) {
@@ -78,7 +87,10 @@ public class InventoryManager : Singleton<InventoryManager> {
             return itemList.Count;
         }
     }
-    public void SetItem(ItemUI itemUI) {
-        
+    public void SetPickedItem(ItemUI itemUI,int Amount) {
+        pickedItem.SetItem(itemUI.item, Amount);
+    }
+    public void SetPickedItemPos(Vector3 pos) {
+        pickedItem.slotGo.transform.localPosition = pos;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +17,14 @@ public class ItemUI {//物品显示UI
         set
         {
             amount = value;
-            amountText.text = amount.ToString();
+            if (amount != 0)
+            {
+                amountText.enabled = true;
+                amountText.text = amount.ToString();
+            }
+            else {
+                amountText.enabled = false;
+            }
         }
     }
     private int amount = 0;
@@ -37,7 +45,10 @@ public class ItemUI {//物品显示UI
     }
     #endregion
     public ItemUI(GameObject go) {
-
+        uiTarget = GameObject.Instantiate(ResourcesTool.GetResoureGameObject(ResourcesTool.ResourceName.itemPrefab));
+        uiTarget.transform.SetParent(go.transform);
+        uiTarget.transform.localPosition = Vector3.zero;
+        uiTarget.transform.localScale = Vector3.one;
     }
     /// <summary>
     /// 初始化方法
@@ -49,7 +60,7 @@ public class ItemUI {//物品显示UI
         uiTarget.transform.localPosition = Vector3.zero;
         uiTarget.transform.localScale = Vector3.one;
         InitItem(item, amount);
-       
+        SetActive(true);
     }
     public void InitItem(Item item,int amount=1) {
         this.item = item;
@@ -57,10 +68,21 @@ public class ItemUI {//物品显示UI
         itemImage.sprite = Resources.Load<Sprite>(item.Sprite);
         amountText = uiTarget.GetComponentInChildren<Text>();
         Amount = amount;
-
+        SetActive(true);
     }
     public void AddAmount(int amount = 1) {
         Amount += amount;
     }
-    
+    public void Destory() {
+        Debug.Log("删除");
+        item = null;
+        itemImage = null;
+        GameObject.Destroy(uiTarget);
+    }
+
+    public void SetActive(bool active)
+    {
+        uiTarget.SetActive(active);
+        amountText.enabled = active;
+    }
 }

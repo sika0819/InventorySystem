@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory{//背包、宝箱基类
-    private List<Slot> slotList = new List<Slot>();
+    public List<Slot> slotList = new List<Slot>();
     public GameObject targetObj;
     public virtual void Init(GameObject go) {//初始化方法
         targetObj = go; 
@@ -38,13 +38,16 @@ public class Inventory{//背包、宝箱基类
     private Slot FindSlot(Item item)//找到一个可以放物品的槽
     {
         for (int i = 0; i < slotList.Count; i++) {
-            if (slotList[i].isEmpty()||(item.Equals(slotList[i].item)&&!slotList[i].IsFilled())) {
+            if (slotList[i].isEmpty()||(item.Equals(slotList[i].itemUI.item)&&!slotList[i].IsFilled())) {
                 return slotList[i];
             }
         }
         return null;
     }
     public void LoadInventory() {
+
+    }
+    public void Hide() {
 
     }
 }
