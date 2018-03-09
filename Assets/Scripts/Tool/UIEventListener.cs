@@ -11,6 +11,7 @@ public class UIEventListener : EventTrigger {
     public ActionHandler OnMouseBeginDrag;
     public ActionHandler OnMouseDrag;
     public ActionHandler OnMouseDragEnd;
+    public ActionHandler OnMouseUp;
     public static UIEventListener GetListener(GameObject go) {
         if (go.GetComponent<UIEventListener>() == null)
         {
@@ -20,26 +21,28 @@ public class UIEventListener : EventTrigger {
     }
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("鼠标进入");
-    
         base.OnPointerEnter(eventData);
         if (OnHover != null)
             OnHover.Invoke(eventData);
     }
     public override void OnPointerExit(PointerEventData eventData)
-    {
-        Debug.Log("鼠标退出");
-      
+    {  
         base.OnPointerExit(eventData);
         if (OnMouseExit != null)
             OnMouseExit.Invoke(eventData);
     }
-    public override void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerDown(PointerEventData eventData)
     {
-        base.OnPointerClick(eventData);
+        base.OnPointerDown(eventData);
         if (OnMouseDown != null)
             OnMouseDown.Invoke(eventData);
     }
+    public override void OnPointerUp(PointerEventData eventData) {
+        base.OnPointerUp(eventData);
+        if (OnMouseUp != null)
+            OnMouseUp.Invoke(eventData);
+    }
+
     public override void OnBeginDrag(PointerEventData eventData)
     {
         base.OnBeginDrag(eventData);
@@ -52,11 +55,13 @@ public class UIEventListener : EventTrigger {
         if (OnMouseDrag != null)
             OnMouseDrag.Invoke(eventData);
     }
-    public override void OnPointerUp(PointerEventData eventData)
+    public override void OnEndDrag(PointerEventData eventData)
     {
-        base.OnPointerUp(eventData);
-        if (OnMouseDragEnd != null) {
+        base.OnEndDrag(eventData);
+        if (OnMouseDragEnd != null)
+        {
             OnMouseDragEnd.Invoke(eventData);
         }
     }
+
 }

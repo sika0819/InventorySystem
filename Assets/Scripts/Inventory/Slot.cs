@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,12 +13,13 @@ public class Slot {//物品槽类
     public bool isDrag=false;
     public Slot(GameObject go) {
         slotGo = go;
-        UIEventListener.GetListener(slotGo).OnHover = ShowTip;
-        UIEventListener.GetListener(slotGo).OnMouseExit = HideTip;
+        UIEventListener.GetListener(slotGo).OnHover = OnMouseEnter;
         UIEventListener.GetListener(slotGo).OnMouseBeginDrag = OnBeginDrag;
         UIEventListener.GetListener(slotGo).OnMouseDrag= OnDrag;
         UIEventListener.GetListener(slotGo).OnMouseDragEnd = OnEndDrag;
+        UIEventListener.GetListener(slotGo).OnMouseExit = OnMouseExit;
     }
+
     
 
     public bool StoreItem(Item item,int amount=1)
@@ -27,21 +29,42 @@ public class Slot {//物品槽类
             itemUI = new ItemUI(slotGo,item,amount);
             return true;
         }
-        else if (itemUI.item.Equals(item))
+        else
         {//序号一致则可以增加数量
-            if (!IsFilled())
+            if (itemUI.item.Equals(item))
             {
-                itemUI.AddAmount(amount);
-                return true;
+                if (!IsFilled())
+                {
+                    itemUI.AddAmount(amount);
+                    return true;
+                }
+                else
+                {
+                    Debug.LogWarning("背包已满" + item.Name);
+                }
             }
             else {
-                Debug.LogWarning("背包已满"+item.Name);
+                if (!IsFilled())
+                {
+                    itemUI.InitItem(item, amount);
+                }
+                else {
+                    Debug.LogWarning("背包已满" + item.Name);
+                }
             }
         }
         return false;
     }
     public bool SetItem(ItemUI itemUI) {
-        if (itemUI!=null&& SetItem(itemUI.item, itemUI.Amount))
+        if (itemUI != null && SetItem(itemUI.item, itemUI.Amount))
+        {
+            return true;
+        }
+        return false;
+    }
+    public bool SetItem(ItemUI itemUI,int amount)
+    {
+        if (itemUI != null && SetItem(itemUI.item, amount))
             return true;
         return false;
     }
@@ -49,16 +72,21 @@ public class Slot {//物品槽类
         if (itemUI == null)
         {
             itemUI = new ItemUI(slotGo, item, amount);
+            slotGo.transform.DOPunchScale(Vector3.one * 1.1f, 0.5f, 10, 0);
             return true;
         }
         else {
             itemUI.InitItem(item,amount);
+            slotGo.transform.DOPunchScale(Vector3.one * 1.1f, 0.5f, 10, 0);
+            return true;
         }
-        return false;
+
     }
     public bool isEmpty() {
-        if (itemUI == null)
+        if (itemUI == null || itemUI.Amount == 0)
+        {
             return true;
+        }
         return false;
     }
     public Item.ItemType GetItemType()
@@ -69,16 +97,17 @@ public class Slot {//物品槽类
     {
         return itemUI.Amount >= itemUI.item.Capacity;
     }
-    public void ShowTip(PointerEventData go)
+    public void OnMouseEnter(PointerEventData go)
     {
-        if(itemUI!=null)
-        ToolTip.Instance.ShowTip(itemUI.item.GetToolTipText());
+        if (itemUI != null)
+        {
+            ToolTip.Instance.ShowTip(itemUI.item.GetToolTipText());
+          
+        }
     }
-    public void HideTip(PointerEventData go)
-    {
+    public void OnMouseExit(PointerEventData go) {
         ToolTip.Instance.HideTip();
     }
-
     public void SetActive(bool active) {
         if(itemUI!=null)
         itemUI.SetActive(active);
@@ -95,17 +124,25 @@ public class Slot {//物品槽类
         if (itemUI != null)
         {
             ItemUI currentItem = itemUI;
+            InventoryManager.Instance.PickedItem.DoScale(1.1f, 0.2f);
             if (Input.GetKey(KeyCode.LeftControl))
             {
-                InventoryManager.Instance.SetPickedItem(itemUI, itemUI.Amount / 2);
+                if (itemUI.Amount / 2 > 0)
+                {
+                    InventoryManager.Instance.SetPickedItem(itemUI, itemUI.Amount / 2);
+                }
+                else {
+                    InventoryManager.Instance.SetPickedItem(itemUI, itemUI.Amount);
+                }
             }
             else {
                 InventoryManager.Instance.SetPickedItem(itemUI, itemUI.Amount);
             }
             ObjFollowMouse(eventData);//让生成的物体跟随鼠标
-            SetActive(false);
+         
         }
     }
+
     public void OnDrag(PointerEventData eventData)//拖拽中
     {
         InventoryManager.Instance.PickedItem.ObjFollowMouse(eventData);//让生成的物体跟随鼠标
@@ -113,32 +150,54 @@ public class Slot {//物品槽类
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-     
+       
         if (eventData.pointerCurrentRaycast.gameObject!=null&& eventData.pointerCurrentRaycast.gameObject.tag == "Slot" && eventData.pointerCurrentRaycast.gameObject != slotGo)
         {
             Slot slot = InventoryManager.Instance.GetSlotByGameObject(eventData.pointerCurrentRaycast.gameObject);
-            
-            if (slot.itemUI == null)
-            {
-                slot.SetItem(itemUI);
-                if (!Input.GetKey(KeyCode.LeftControl))
-                {
-                    InventoryManager.Instance.PickedItem.SetActive(false);
-                    Destory();
-                }
+            if (slot.isEmpty())
+            {//目标槽为空
+                slot.SetItem(InventoryManager.Instance.PickedItem.itemUI);
             }
             else {
-
-                SetItem(slot.itemUI);
-                slot.SetItem(InventoryManager.Instance.PickedItem.itemUI);
-                InventoryManager.Instance.PickedItem.SetActive(false);
+                if (Input.GetKey(KeyCode.LeftControl))
+                {//结束时按着ctrol
+                    if (!slot.IsFilled()&& InventoryManager.Instance.PickedItem.itemUI.Equals(slot.itemUI))
+                    {
+                        if (slot.itemUI.item.Capacity - slot.itemUI.Amount >= 0)
+                        {
+                            InventoryManager.Instance.PickedItem.itemUI.Amount -= 1;
+                            slot.itemUI.AddAmount(1);
+                        }
+                        SetItem(InventoryManager.Instance.PickedItem.itemUI);
+                    }
+                    else {//背包满了，把物品装回原来的位置
+                        itemUI.AddAmount(InventoryManager.Instance.PickedItem.itemUI.Amount);
+                    }
+                }
+                else {
+                    if (!InventoryManager.Instance.PickedItem.itemUI.Equals(slot.itemUI))
+                    {
+                        SetItem(slot.itemUI);
+                        slot.SetItem(InventoryManager.Instance.PickedItem.itemUI);
+                    }
+                    else {
+                        if (slot.itemUI.item.Capacity - InventoryManager.Instance.PickedItem.itemUI.Amount > 0)
+                        {
+                            slot.itemUI.AddAmount(InventoryManager.Instance.PickedItem.itemUI.Amount);
+                        }
+                        else
+                        {
+                            SetItem(InventoryManager.Instance.PickedItem.itemUI);
+                        }
+                    }
+                }
             }
         }
-        else {
-            SetActive(true);
-            InventoryManager.Instance.PickedItem.SetActive(false);
+        else {//没有移动到任何物体上
+            SetItem(InventoryManager.Instance.PickedItem.itemUI);
         }
-      
+        InventoryManager.Instance.PickedItem.SetActive(false);
+
     }//拖拽结束
     private void ObjFollowMouse(PointerEventData eventData)
     {
@@ -152,5 +211,9 @@ public class Slot {//物品槽类
                 rc.position = globalMousePos;
             }
         }
+    }
+    public void DoScale(float endValue,float duration) {
+        if(itemUI!=null)
+        itemUI.uiTarget.transform.DOScale(new Vector3(endValue,endValue,endValue),duration).SetEase(Ease.Linear);
     }
 }

@@ -17,13 +17,14 @@ public class ItemUI {//物品显示UI
         set
         {
             amount = value;
+            amountText.text = amount.ToString();
             if (amount != 0)
             {
-                amountText.enabled = true;
-                amountText.text = amount.ToString();
+                SetActive(true);
+               
             }
             else {
-                amountText.enabled = false;
+                SetActive(false);
             }
         }
     }
@@ -68,7 +69,7 @@ public class ItemUI {//物品显示UI
         itemImage.sprite = Resources.Load<Sprite>(item.Sprite);
         amountText = uiTarget.GetComponentInChildren<Text>();
         Amount = amount;
-        SetActive(true);
+     
     }
     public void AddAmount(int amount = 1) {
         Amount += amount;
@@ -84,5 +85,9 @@ public class ItemUI {//物品显示UI
     {
         uiTarget.SetActive(active);
         amountText.enabled = active;
+    }
+    public bool Equals(ItemUI itemUI)
+    {
+        return item.Equals(itemUI.item);
     }
 }

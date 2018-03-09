@@ -89,8 +89,10 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
     public void SetPickedItem(ItemUI itemUI,int Amount) {
         pickedItem.SetItem(itemUI.item, Amount);
+        itemUI.Amount = itemUI.Amount - Amount;
     }
     public void SetPickedItemPos(Vector3 pos) {
         pickedItem.slotGo.transform.localPosition = pos;
     }
+    
 }
