@@ -11,7 +11,9 @@ public class Slot {//物品槽类
     //public Item item;//存储物品
     public ItemUI itemUI;
     public bool isDrag=false;
-    public Slot(GameObject go) {
+    Inventory inventory;//所属类
+    public Slot(Inventory inventory, GameObject go) {
+        this.inventory = inventory;
         slotGo = go;
         UIEventListener.GetListener(slotGo).OnHover = OnMouseEnter;
         UIEventListener.GetListener(slotGo).OnMouseBeginDrag = OnBeginDrag;

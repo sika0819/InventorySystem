@@ -10,6 +10,7 @@ public class InventoryManager : Singleton<InventoryManager> {
     private List<Equipment> equipList = new List<Equipment>();//装备库
     private List<Material> materialList = new List<Material>();
     private List<Consumable> consumList = new List<Consumable>();//消耗库
+    public List<Slot> slotList = new List<Slot>();
     [HideInInspector]
     public Canvas canvas;
     #region 选择的物体
@@ -24,9 +25,10 @@ public class InventoryManager : Singleton<InventoryManager> {
     void Start () {
         ResourcesTool.Init();
         Knackpack.Instance.Init(transform.Find(ResourcesTool.ResourceName.KnackpackPanel).Find(ResourcesTool.ResourceName.SlotPanel).gameObject);
+        Chest.Instance.Init(transform.Find(ResourcesTool.ResourceName.Chest).Find(ResourcesTool.ResourceName.SlotPanel).gameObject);
         ToolTip.Instance.Init(transform.Find(ResourcesTool.ResourceName.ToolTip).gameObject);
         canvas = GameObject.FindObjectOfType<Canvas>();
-        pickedItem = new Slot(transform.Find(ResourcesTool.ResourceName.PickedItem).gameObject);
+        pickedItem = new Slot(null,transform.Find(ResourcesTool.ResourceName.PickedItem).gameObject);
         ParseItemJson();
     }
 	
@@ -66,13 +68,7 @@ public class InventoryManager : Singleton<InventoryManager> {
             itemList.Add(item);
         }
     }
-    public Slot GetSlotByGameObject(GameObject go) {
-        foreach (Slot item in Knackpack.Instance.slotList) {
-            if (item.slotGo.Equals(go))
-                return item;
-        }
-        return null;
-    }
+    
     public Item GetItemById(int id)
     {
         for (int i = 0; i < itemList.Count; i++) {
@@ -94,5 +90,13 @@ public class InventoryManager : Singleton<InventoryManager> {
     public void SetPickedItemPos(Vector3 pos) {
         pickedItem.slotGo.transform.localPosition = pos;
     }
-    
+
+    public Slot GetSlotByGameObject(GameObject gameObject)
+    {
+        for (int i = 0; i < slotList.Count; i++) {
+            if (slotList[i].slotGo == gameObject)
+                return slotList[i];
+        }
+        return null;
+    }
 }

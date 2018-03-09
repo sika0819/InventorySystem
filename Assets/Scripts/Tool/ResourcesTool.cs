@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,8 @@ public static class ResourcesTool  {
         public static string Content = "Content";
 
         public static string PickedItem = "PickedItem";
+
+        public static string Chest = "ChestPanel";
     }
     public static void Init() {
         GameObject[] gameObjects = Resources.LoadAll<GameObject>("Prefab");
